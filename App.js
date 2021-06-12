@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Navbar } from "./src/components/Navbar";
 import { MainScreen } from "./src/screens/MainScreen";
 import { TodoScreen } from "./src/screens/TodoScreen";
@@ -22,7 +22,31 @@ export default function App() {
     };
 
     const deleteTodo = (id) => {
-        setTodos((prev) => prev.filter((item) => item.id !== id));
+        const todo = todos.find((item) => item.id === id);
+        Alert.alert(
+            "Delete item",
+            `Are you sure that you want delete ${todo.title} ?`,
+            [
+                {
+                    text: "Cancel",
+
+                    style: "cancel",
+                },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: () => {
+                        setTodoId(null);
+                        setTodos((prev) =>
+                            prev.filter((item) => item.id !== id)
+                        );
+                    },
+                },
+            ],
+            {
+                cancelable: false,
+            }
+        );
     };
 
     let content = (
@@ -36,7 +60,11 @@ export default function App() {
     if (todoId) {
         const selectedTodo = todos.find((item) => item.id === todoId);
         content = (
-            <TodoScreen goBack={() => setTodoId(null)} todo={selectedTodo} />
+            <TodoScreen
+                goBack={() => setTodoId(null)}
+                todo={selectedTodo}
+                onDelete={deleteTodo}
+            />
         );
     }
     return (
