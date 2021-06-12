@@ -1,21 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Navbar } from "./src/components/Navbar";
+import { MainScreen } from "./src/screens/MainScreen";
+import { TodoScreen } from "./src/screens/TodoScreen";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [todoId, setTodoId] = useState("2");
+    const [todos, setTodos] = useState([
+        { id: "1", title: "learn react native" },
+        { id: "2", title: "make an app" },
+    ]);
+    const addTodo = (title) => {
+        setTodos((prev) => [
+            ...prev,
+            {
+                id: Date.now().toString(),
+                title: title,
+            },
+        ]);
+    };
+
+    const deleteTodo = (id) => {
+        setTodos((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    let content = (
+        <MainScreen
+            todos={todos}
+            addTodo={addTodo}
+            deleteTodo={deleteTodo}
+            openTodo={setTodoId}
+        />
+    );
+    if (todoId) {
+        const selectedTodo = todos.find((item) => item.id === todoId);
+        content = (
+            <TodoScreen goBack={() => setTodoId(null)} todo={selectedTodo} />
+        );
+    }
+    return (
+        <View>
+            <Navbar title="Todo App" />
+            <View style={styles.container}>{content}</View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        paddingHorizontal: 20,
+        paddingVertical: 30,
+    },
 });
