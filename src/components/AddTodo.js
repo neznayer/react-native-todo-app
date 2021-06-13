@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, Button, Alert } from "react-native";
+import { StyleSheet, View, TextInput, Alert, Keyboard } from "react-native";
 import { THEME } from "../Theme";
+import { Ionicons } from "@expo/vector-icons";
+
 export const AddTodo = ({ onSubmit }) => {
     const pressHandler = () => {
         if (value.trim()) {
             onSubmit(value);
             setValue("");
+            Keyboard.dismiss();
         } else {
             Alert.alert("Input cannot be empty");
         }
@@ -22,7 +25,10 @@ export const AddTodo = ({ onSubmit }) => {
                 autoCorrect={false}
                 autoCapitalize="none"
             />
-            <Button title="Add!" onPress={pressHandler} />
+            {/* <Button title="Add!" onPress={pressHandler} /> */}
+            <Ionicons.Button onPress={pressHandler} name="add-circle">
+                Add
+            </Ionicons.Button>
         </View>
     );
 };
@@ -35,7 +41,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     input: {
-        width: "70%",
+        width: "60%",
         padding: 10,
         borderStyle: "solid",
         borderBottomWidth: 2,

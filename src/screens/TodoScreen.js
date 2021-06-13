@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
+
 import { EditModal } from "../components/EditModal";
+import { AppButton } from "../components/ui/AppButton";
 import { AppCard } from "../components/ui/AppCard";
+import { AppTextBold } from "../components/ui/AppTextBold";
 import { THEME } from "../Theme";
 
 export const TodoScreen = ({ goBack, todo, onDelete, onSave }) => {
@@ -20,24 +24,25 @@ export const TodoScreen = ({ goBack, todo, onDelete, onSave }) => {
                 onSave={saveHandler}
             />
             <AppCard style={styles.card}>
-                <Text style={styles.title}>{todo.title}</Text>
-                <Button title="Edit" onPress={() => setModal(true)} />
+                <AppTextBold style={styles.title}>{todo.title}</AppTextBold>
+                <AppButton onPress={() => setModal(true)}>
+                    <FontAwesome name="edit" size={20} />
+                </AppButton>
             </AppCard>
 
             <View style={styles.buttons}>
                 <View style={styles.button}>
-                    <Button
-                        title="Back"
-                        onPress={goBack}
-                        color={THEME.GRAY_COLOR}
-                    />
+                    <AppButton onPress={goBack} color={THEME.GRAY_COLOR}>
+                        <AntDesign name="back" size={20} color="#fff" />
+                    </AppButton>
                 </View>
                 <View style={styles.button}>
-                    <Button
-                        title="Delete"
+                    <AppButton
                         onPress={() => onDelete(todo.id)}
                         color={THEME.DANGER_COLOR}
-                    />
+                    >
+                        <FontAwesome name="trash" size={20} color="#fff" />
+                    </AppButton>
                 </View>
             </View>
         </View>
